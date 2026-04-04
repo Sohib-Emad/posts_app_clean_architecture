@@ -12,48 +12,45 @@ abstract class RemoteDataSource {
   Future<Unit> deletePost(int id);
 }
 
-const String baseUrl = 'your-base-Url';
+const String baseUrl = 'https://dummyjson.com';
 
 class RemoteDataSourceImpl implements RemoteDataSource {
   final http.Client httpClient;
   RemoteDataSourceImpl({required this.httpClient});
 
-  @override
-  Future<List<PostsModel>> getAllPosts() async {
-    final response = await httpClient.get(
-      Uri.parse(baseUrl + '/posts/'),
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      List decodeJsonData = json.decode(response.body);
-      List<PostsModel> postsModels = decodeJsonData
-          .map<PostsModel>((e) => PostsModel.fromJson(e))
-          .toList();
-      return postsModels;
-    } else {
-      throw ServerException();
-    }
+ @override
+Future<List<PostsModel>> getAllPosts() async {
+  final response = await httpClient.get(
+    Uri.parse('$baseUrl/posts'),
+    headers: {'Content-Type': 'application/json'},
+  );
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> decoded = json.decode(response.body); // ✅
+    final List data = decoded['posts'];                               // ✅
+    return data.map<PostsModel>((e) => PostsModel.fromJson(e)).toList();
+  } else {
+    throw ServerException();
   }
+}
 
-  @override
-  Future<Unit> addPost(PostsModel post) async {
-    final body = {"title": post.title, "body": post.body};
-    final response = await httpClient.post(
-      Uri.parse(baseUrl + '/posts/'),
-      headers: {'Content-Type': 'application/json'},
-      body: body,
-    );
-    if (response.statusCode == 201) {
-      return Future.value(unit);
-    } else {
-      throw ServerException();
-    }
+
+@override
+Future<Unit> addPost(PostsModel post) async {
+  final response = await httpClient.post(
+    Uri.parse('$baseUrl/posts/add'),                                  // ✅
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({'title': post.title, 'body': post.body}),
+  );
+  if (response.statusCode == 201) {
+    return Future.value(unit);
+  } else {
+    throw ServerException();
   }
-
+}
   @override
   Future<Unit> deletePost(int id) async {
     final response = await httpClient.delete(
-      Uri.parse(baseUrl + '/posts/${id.toString()}'),
+      Uri.parse('$baseUrl/posts/$id'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
@@ -65,14 +62,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<Unit> updatePost(PostsModel post) async {
-    final postid = post.id.toString();
-    final body = {"title": post.title, "body": post.body};
-    final responsr = await httpClient.patch(
-      Uri.parse(baseUrl + '/posts/${postid.toString()}'),
+    final response = await httpClient.patch(  // ✅ typo fixed
+      Uri.parse('$baseUrl/posts/${post.id}'),  // ✅ redundant toString() removed
       headers: {'Content-Type': 'application/json'},
-      body: body,
+      body: jsonEncode({'title': post.title, 'body': post.body}), // ✅ encoded
     );
-    if (responsr.statusCode == 200) {
+    if (response.statusCode == 200) {
       return Future.value(unit);
     } else {
       throw ServerException();

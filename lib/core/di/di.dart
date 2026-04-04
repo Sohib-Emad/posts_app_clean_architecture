@@ -1,4 +1,4 @@
-import 'package:clean_architecture_posts_app/core/network.dart/network_checker.dart';
+import 'package:clean_architecture_posts_app/core/network/network_checker.dart';
 import 'package:clean_architecture_posts_app/features/posts/data/datasource/local_data_source.dart';
 import 'package:clean_architecture_posts_app/features/posts/data/datasource/remote_data_source.dart';
 import 'package:clean_architecture_posts_app/features/posts/data/repo/posts_repo_impl.dart';

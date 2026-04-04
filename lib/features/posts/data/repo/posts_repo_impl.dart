@@ -1,6 +1,6 @@
 import 'package:clean_architecture_posts_app/core/error/exception.dart';
 import 'package:clean_architecture_posts_app/core/error/failure.dart';
-import 'package:clean_architecture_posts_app/core/network.dart/network_checker.dart';
+import 'package:clean_architecture_posts_app/core/network/network_checker.dart';
 import 'package:clean_architecture_posts_app/features/posts/data/datasource/local_data_source.dart';
 import 'package:clean_architecture_posts_app/features/posts/data/datasource/remote_data_source.dart';
 import 'package:clean_architecture_posts_app/features/posts/data/models/posts_model.dart';
@@ -25,14 +25,14 @@ class PostsRepoImpl implements BaseRepoPosts {
       try {
         final response = await remoteDataSourcePosts.getAllPosts();
         await localDataSourcePosts.cachePosts(response);
-
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
-        final localPosts = await localDataSourcePosts.getCachedPosts();
+        final List<PostsEntity> localPosts = await localDataSourcePosts
+            .getCachedPosts(); // ✅ explicit type
         return Right(localPosts);
       } on EmptyCacheException {
         return Left(EmptyCacheFailure());
@@ -47,7 +47,7 @@ class PostsRepoImpl implements BaseRepoPosts {
       title: post.title,
       body: post.body,
     );
-    return _getmessage(() {
+    return _getMessage(() {
       return remoteDataSourcePosts.addPost(postsModel);
     });
   }
@@ -59,19 +59,20 @@ class PostsRepoImpl implements BaseRepoPosts {
       title: post.title,
       body: post.body,
     );
-    return _getmessage(() {
+    return _getMessage(() {
       return remoteDataSourcePosts.updatePost(postsModel);
     });
   }
 
   @override
   Future<Either<Failure, Unit>> deletePost(int id) async {
-    return _getmessage(() {
+    return _getMessage(() {
       return remoteDataSourcePosts.deletePost(id);
     });
   }
 
-  Future<Either<Failure, Unit>> _getmessage(
+  Future<Either<Failure, Unit>> _getMessage(
+    // ✅ camelCase
     DeleteOrUpdateOrAddPost deleteOrUpdateOrAddPost,
   ) async {
     if (await networkChecker.isConnected) {
