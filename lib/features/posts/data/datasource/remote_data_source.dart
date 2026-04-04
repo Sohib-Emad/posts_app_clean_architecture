@@ -37,7 +37,7 @@ Future<List<PostsModel>> getAllPosts() async {
 @override
 Future<Unit> addPost(PostsModel post) async {
   final response = await httpClient.post(
-    Uri.parse('$baseUrl/posts/add'),                                  // ✅
+    Uri.parse('$baseUrl/posts/add'),                                  
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({'title': post.title, 'body': post.body}),
   );
@@ -62,10 +62,10 @@ Future<Unit> addPost(PostsModel post) async {
 
   @override
   Future<Unit> updatePost(PostsModel post) async {
-    final response = await httpClient.patch(  // ✅ typo fixed
-      Uri.parse('$baseUrl/posts/${post.id}'),  // ✅ redundant toString() removed
+    final response = await httpClient.patch(  
+      Uri.parse('$baseUrl/posts/${post.id}'),  
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'title': post.title, 'body': post.body}), // ✅ encoded
+      body: jsonEncode({'title': post.title, 'body': post.body}), 
     );
     if (response.statusCode == 200) {
       return Future.value(unit);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:clean_architecture_posts_app/core/error/exception.dart';
 import 'package:clean_architecture_posts_app/core/error/failure.dart';
 import 'package:clean_architecture_posts_app/core/network/network_checker.dart';
@@ -32,7 +34,7 @@ class PostsRepoImpl implements BaseRepoPosts {
     } else {
       try {
         final List<PostsEntity> localPosts = await localDataSourcePosts
-            .getCachedPosts(); // ✅ explicit type
+            .getCachedPosts();
         return Right(localPosts);
       } on EmptyCacheException {
         return Left(EmptyCacheFailure());

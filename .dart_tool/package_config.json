@@ -111,13 +111,13 @@
     },
     {
       "name": "connectivity_plus",
-      "rootUri": "file:///home/sohib/.pub-cache/hosted/pub.dev/connectivity_plus-6.1.5",
+      "rootUri": "file:///home/sohib/.pub-cache/hosted/pub.dev/connectivity_plus-7.1.0",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "connectivity_plus_platform_interface",
-      "rootUri": "file:///home/sohib/.pub-cache/hosted/pub.dev/connectivity_plus_platform_interface-2.0.1",
+      "rootUri": "file:///home/sohib/.pub-cache/hosted/pub.dev/connectivity_plus_platform_interface-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -284,8 +284,8 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "internet_connection_checker",
-      "rootUri": "file:///home/sohib/.pub-cache/hosted/pub.dev/internet_connection_checker-3.0.1",
+      "name": "internet_connection_checker_plus",
+      "rootUri": "file:///home/sohib/.pub-cache/hosted/pub.dev/internet_connection_checker_plus-2.9.1+2",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
