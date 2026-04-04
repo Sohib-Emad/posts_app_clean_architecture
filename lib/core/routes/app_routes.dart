@@ -13,7 +13,7 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
-              BlocProvider(create: (_) => sl<PostsBloc>()),
+              BlocProvider(create: (_) => sl<PostsBloc>()..add(GetAllPostsEvent())),
               BlocProvider(create: (_) => sl<AddDeleteUpdatePostsBloc>()),
             ],
             child: const HomePage(),
