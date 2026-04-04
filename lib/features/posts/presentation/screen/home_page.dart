@@ -29,7 +29,11 @@ class HomePage extends StatelessWidget {
           if (state is PostsLoading) {
             return LoadingWidget();
           } else if (state is PostsLoaded) {
-            return PostListWidget(posts: state.posts);
+            return RefreshIndicator(
+              onRefresh: () => _onRefresh(context),
+
+              child: PostListWidget(posts: state.posts),
+            );
           } else if (state is PostsError) {
             return MessageDisplayWidget(message: state.message);
           }
@@ -38,6 +42,10 @@ class HomePage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<void> _onRefresh(BuildContext context) async {
+    BlocProvider.of<PostsBloc>(context).add(RefreshPostsEvent());
   }
 
   Widget _buildFloatingActionButton(BuildContext context) {
