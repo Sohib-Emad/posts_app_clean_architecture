@@ -1,13 +1,22 @@
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 abstract class NetworkChecker {
   Future<bool> get isConnected;
+  Stream<bool> get onConnectionChange;
 }
 
 class NetworkCheckerImpl implements NetworkChecker {
-  final InternetConnectionChecker connectionChecker;
+  final InternetConnection connection;
 
-  NetworkCheckerImpl({required this.connectionChecker});
+  NetworkCheckerImpl({required this.connection});
+
   @override
-  Future<bool> get isConnected => connectionChecker.hasConnection;
+  Future<bool> get isConnected async {
+    return await connection.hasInternetAccess;
+  }
+
+  @override
+  Stream<bool> get onConnectionChange => connection.onStatusChange.map(
+    (status) => status == InternetStatus.connected,
+  );
 }
