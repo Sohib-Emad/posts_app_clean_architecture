@@ -25,8 +25,8 @@ Future<List<PostsModel>> getAllPosts() async {
     headers: {'Content-Type': 'application/json'},
   );
   if (response.statusCode == 200) {
-    final Map<String, dynamic> decoded = json.decode(response.body); // ✅
-    final List data = decoded['posts'];                               // ✅
+    final Map<String, dynamic> decoded = json.decode(response.body); 
+    final List data = decoded['posts'];                               
     return data.map<PostsModel>((e) => PostsModel.fromJson(e)).toList();
   } else {
     throw ServerException();
